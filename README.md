@@ -1,23 +1,37 @@
 # Folder Studio
 
-A [Sine](https://github.com/CosmoCreeper/Sine) mod for [Zen Browser](https://zen-browser.app) that adds:
+A [Sine](https://github.com/CosmoCreeper/Sine) mod for [Zen Browser](https://zen-browser.app) that lets you fully customize tab folders — and brings folders outside the pinned area.
 
-- **Couleur personnalisée** pour les dossiers (bordure 2px + fond légèrement teinté), via un petit sélecteur (palette + couleur libre) ouvert par clic droit sur un dossier.
-- **Icône personnalisée** : soit une icône standard (réutilise le picker natif de Zen), soit le favicon d'un des onglets présents dans le dossier.
-- **Dossiers hors zone épinglée** : les groupes d'onglets natifs de Firefox (créés via clic droit sur un onglet → "Déplacer vers un groupe → Nouveau groupe") sont habillés avec la même apparence que les dossiers Zen, et bénéficient du même système de couleur/icône.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Hashjolly/folder-studio/main/assets/folders-visual.png" width="640" alt="Folder Studio preview">
+</p>
 
-## Prérequis
+## Features
 
-- Zen Browser (testé sur 1.21.8b).
-- `browser.tabs.groups.enabled` = `true` dans `about:config` (activé par défaut sur les versions récentes) pour la partie "dossiers hors épinglés".
-- [Sine](https://github.com/CosmoCreeper/Sine) installé.
+- **Custom colors** — pick any color for a folder: a 2px border plus a softly tinted background, no longer limited to a preset palette.
+- **Custom icons** — use one of the standard icons, or grab the favicon of any tab already inside the folder.
+- **Folders outside pinned tabs** — native Firefox tab groups get the exact same look and controls as Zen folders, so you're no longer limited to the pinned area.
+- **One consistent panel** for name, icon and color — reached the same way whether you're creating a group, right-clicking it, or clicking its icon.
+- **Full context menu** on tab groups: personalize, ungroup, or delete — actions that were missing on native groups by default.
 
-## Installation
+## Requirements
 
-Voir la section "Installer/tester" dans la conversation de développement, ou une fois publié : Sine → Marketplace → rechercher "Folder Studio".
+- Zen Browser (tested on 1.21.8b)
+- [Sine](https://github.com/CosmoCreeper/Sine) installed
+- `browser.tabs.groups.enabled` = `true` in `about:config` (on by default in recent Zen builds) for the "folders outside pinned tabs" part
 
-## Notes techniques
+## Install
 
-- Les dossiers Zen (`zen-folder`) sont toujours épinglés par construction (`get pinned()` renvoie `isZenFolder`, setter no-op côté navigateur) — ce mod ne tente pas de contourner cet invariant, il s'appuie sur les tab-groups natifs pour le cas "hors pinned".
-- L'icône des `zen-folder` est appliquée via l'API native `gZenFolders.setFolderUserIcon()`, donc persistée automatiquement par la sauvegarde de session de Zen.
-- La couleur des `zen-folder` et l'icône des tab-groups natifs ne sont pas persistées nativement par le navigateur : ce mod les stocke dans des préférences JSON (`folder-studio.colors`, `folder-studio.native-icons`) indexées par l'identifiant du groupe.
+Via Sine's Marketplace once published, or manually:
+
+1. Copy this folder into `<profile>/chrome/sine-mods/FolderStudio`
+2. Enable it in Sine's settings
+
+## Usage
+
+- **Zen folder (pinned):** right-click a folder → *Couleur du dossier…* / *Icône depuis un onglet…*
+- **Tab group (outside pinned):** create one via right-click on a tab → *Move Tab to Group → New Group*. Click its icon for the full name/icon/color panel, or right-click it for the full action menu.
+
+## License
+
+MIT

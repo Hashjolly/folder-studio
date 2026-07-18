@@ -4,8 +4,9 @@
   "description": "Custom border/background colors and custom icons (standard icons or a tab's favicon) for Zen folders, plus folder-style tab groups outside the pinned area.",
   "author": "hashj",
   "version": "1.0.0",
-  "homepage": "https://github.com/REPLACE_ME/folder-studio",
-  "readme": "https://raw.githubusercontent.com/REPLACE_ME/folder-studio/main/README.md",
+  "homepage": "https://github.com/Hashjolly/folder-studio",
+  "readme": "https://raw.githubusercontent.com/Hashjolly/folder-studio/main/README.md",
+  "image": "https://raw.githubusercontent.com/Hashjolly/folder-studio/main/assets/folders-visual.png",
   "style": {
     "chrome": "chrome.css"
   },
