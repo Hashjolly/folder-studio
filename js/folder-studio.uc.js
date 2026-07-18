@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Folder Studio
 // @description  Custom colors and icons for Zen folders, and folder-style native tab groups outside pinned tabs.
-// @version      0.1.0
+// @version      1.0.1
 // @author       hashj
 // @grant        none
 // ==/UserScript==
@@ -10,9 +10,14 @@
   if (window.__folderStudioInitialized) return;
   window.__folderStudioInitialized = true;
 
+  // Deprecated storage: favicon data-URIs pushed folder-studio.native-icons
+  // well past Firefox's "don't put this much data in a pref" threshold
+  // (logged its own console warning). Kept only as a one-time migration
+  // source into an external JSON file, which has no such size concern.
   const PREF_COLORS = "folder-studio.colors";
   const PREF_NATIVE_ICONS = "folder-studio.native-icons";
   const PREF_STYLE_GROUPS = "folder-studio.style-tab-groups";
+  const DATA_FILE = PathUtils.join(PathUtils.profileDir, "folder-studio-data.json");
 
   const DEFAULT_SWATCHES = [
     "#f28b82", "#fbbc04", "#fff475", "#ccff90",
@@ -28,11 +33,30 @@
     }
   }
 
-  function writeJSONPref(name, obj) {
+  async function readDataFile() {
     try {
-      Services.prefs.setStringPref(name, JSON.stringify(obj));
+      return JSON.parse(await IOUtils.readUTF8(DATA_FILE));
+    } catch {
+      // No file yet - either a fresh install, or an upgrade from the old
+      // pref-based storage. Migrate whatever is in the old prefs (if any)
+      // and clear them so the size warning can't recur.
+      const colors = readJSONPref(PREF_COLORS);
+      const nativeIcons = readJSONPref(PREF_NATIVE_ICONS);
+      const data = { colors, nativeIcons };
+      if (Object.keys(colors).length || Object.keys(nativeIcons).length) {
+        await writeDataFile(data);
+        Services.prefs.clearUserPref(PREF_COLORS);
+        Services.prefs.clearUserPref(PREF_NATIVE_ICONS);
+      }
+      return data;
+    }
+  }
+
+  async function writeDataFile(data) {
+    try {
+      await IOUtils.writeUTF8(DATA_FILE, JSON.stringify(data));
     } catch (e) {
-      console.error("[FolderStudio] Failed to write pref", name, e);
+      console.error("[FolderStudio] Failed to write data file", e);
     }
   }
 
@@ -46,9 +70,10 @@
     #currentFolderMenuTarget = null;
     #mutationObserver = null;
 
-    init() {
-      this.#colors = readJSONPref(PREF_COLORS);
-      this.#nativeIcons = readJSONPref(PREF_NATIVE_ICONS);
+    async init() {
+      const data = await readDataFile();
+      this.#colors = data.colors || {};
+      this.#nativeIcons = data.nativeIcons || {};
 
       this.#buildColorPanel();
       this.#buildIconPanel();
@@ -71,7 +96,7 @@
       } else {
         delete this.#colors[id];
       }
-      writeJSONPref(PREF_COLORS, this.#colors);
+      this.#saveData();
     }
 
     #persistNativeIcon(id, iconURL) {
@@ -80,7 +105,13 @@
       } else {
         delete this.#nativeIcons[id];
       }
-      writeJSONPref(PREF_NATIVE_ICONS, this.#nativeIcons);
+      this.#saveData();
+    }
+
+    #saveData() {
+      // Fire-and-forget: called from synchronous UI event handlers, and a
+      // write failure is already logged inside writeDataFile itself.
+      writeDataFile({ colors: this.#colors, nativeIcons: this.#nativeIcons });
     }
 
     // ---------- applying state to DOM ----------
@@ -637,11 +668,7 @@
     }
     const manager = new FolderStudioManager();
     window.gFolderStudio = manager;
-    try {
-      manager.init();
-    } catch (e) {
-      console.error("[FolderStudio] init failed", e);
-    }
+    manager.init().catch((e) => console.error("[FolderStudio] init failed", e));
   }
 
   if (document.readyState === "loading") {
