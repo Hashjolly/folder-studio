@@ -1,0 +1,20 @@
+[
+  {
+    "type": "text",
+    "label": "🗂️ Folder Studio",
+    "margin": "10px 0 15px 0",
+    "size": "20px"
+  },
+  {
+    "type": "checkbox",
+    "property": "folder-studio.style-tab-groups",
+    "label": "Habiller les groupes d'onglets natifs en dossiers",
+    "defaultValue": true
+  },
+  {
+    "type": "text",
+    "label": "Applique la bordure, le fond et l'icône des dossiers Zen aux groupes d'onglets natifs de Firefox (utiles pour les dossiers hors zone épinglée).",
+    "margin": "0 0 12px 24px",
+    "size": "12px"
+  }
+]

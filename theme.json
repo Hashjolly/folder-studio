@@ -1,0 +1,24 @@
+{
+  "id": "FolderStudio",
+  "name": "Folder Studio",
+  "description": "Custom border/background colors and custom icons (standard icons or a tab's favicon) for Zen folders, plus folder-style tab groups outside the pinned area.",
+  "author": "hashj",
+  "version": "1.0.0",
+  "homepage": "https://github.com/REPLACE_ME/folder-studio",
+  "readme": "https://raw.githubusercontent.com/REPLACE_ME/folder-studio/main/README.md",
+  "style": {
+    "chrome": "chrome.css"
+  },
+  "scripts": {
+    "js/folder-studio.uc.js": {
+      "name": "Core script",
+      "description": "Adds color/icon customization UI for zen-folder and native tab-group folders.",
+      "include": ["chrome://browser/content/browser.xhtml"]
+    }
+  },
+  "preferences": "preferences.json",
+  "tags": ["sine", "folders", "tabs", "customization", "JavaScript"],
+  "createdAt": "2026-07-18",
+  "updatedAt": "2026-07-18",
+  "fork": ["zen"]
+}
