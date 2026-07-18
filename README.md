@@ -31,3 +31,7 @@ Via Sine's Marketplace once published, or manually:
 
 - **Zen folder (pinned):** right-click a folder → *Couleur du dossier…* / *Icône depuis un onglet…*
 - **Tab group (outside pinned):** create one via right-click on a tab → *Move Tab to Group → New Group*. Click its icon for the full name/icon/color panel, or right-click it for the full action menu.
+
+## LICENCE
+
+MIT
